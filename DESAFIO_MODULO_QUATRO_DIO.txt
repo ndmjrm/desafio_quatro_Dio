@@ -1,0 +1,49 @@
+Crie as queries para responder essas perguntas 
+
+Qual o departamento com maior número de 
+select concat(e.Fname, ' ', e.Lname) as Nome_Completo, e.Dno, d.Dname, d.Dnumber
+from employee as e, departament as d
+group by e.Dno
+order by e.Dno desc;
+
+Quais são os departamentos por cidade? 
+select Pname, Plocation
+from project;
+
+
+Relação de empregrados por departamento 
+select concat(e.Fname, ' ', e.Lname) as Nome_Completo, e.Dno, d.Dname, d.Dnumber
+from employee as e, departament as d
+where e.Dno = d.Dnumber;
+
+
+Crie o índice para cada tabela envolvida (de acordo com a necessidade) 
+
+CREATE INDEX index_departament_Dno ON departament(Dno); -- escolhido Btree para consultar 
+a arvore e ganhar mais velocidade através do atributo d.Dnumber
+
+CREATE INDEX index_employee_hash ON employee(Dno) USING HASH; -- para consulta em Hash
+devido ao espelhamento de dados.
+
+
+-- producer de inserção dem departament
+delimiter %
+create procedure insert_departament_proc
+(
+    in Dname_pr 		varchar(15), 
+    in Dnumber_pr 		int(11), 
+    in Mgr_ssn_pr		char (9), 
+    in Mgr_start_pr		date
+)
+begin
+	insert into departament (Dname, Dnumber, Mgr_ssn, Mgr_start)
+	values (Dname_pr, Dnumber_pr, Mgr_ssn_pr, Mgr_startp);
+        
+	select * from departament;
+end 
+% delimiter;
+
+call ins('Analise', 8, '777444111', '1976-03-12'),
+	('Teste', 7, '222333555', '1994-03-12');
+
+
